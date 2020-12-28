@@ -12,11 +12,14 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
+let posts = [];
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get('/', function(req, res){
   res.render('home', {_homeContent: homeStartingContent});
+  console.log(posts);
 });
 
 app.get('/about', function(req, res) {
@@ -29,6 +32,18 @@ app.get('/contact', function(req, res){
 
 app.get('/compose', function(req, res){
   res.render('compose');
+});
+
+app.post('/compose', function(req, res){
+
+  let _blogPost ={
+    _title: req.body.title,
+    content: req.body.blogPost
+  }
+
+  posts.push(_blogPost);
+
+  res.redirect('/');
 });
 
 
