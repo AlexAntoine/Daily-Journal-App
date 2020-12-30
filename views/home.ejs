@@ -2,4 +2,12 @@
 <h1>Home</h1>
 
 <p> <%= _homeContent %> </p>
+
+<% for(var a = 0; a< posts.length; a++){ %> 
+    <% console.log(posts[a]._title); %>
+
+<%} %>
+
+
+
 <%- include('partials/footer');%>
