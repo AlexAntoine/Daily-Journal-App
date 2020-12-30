@@ -18,8 +18,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 app.get('/', function(req, res){
-  res.render('home', {_homeContent: homeStartingContent});
-  console.log(posts);
+
+  res.render('home', {
+    _homeContent: homeStartingContent,
+    posts: posts
+  });
+  
 });
 
 app.get('/about', function(req, res) {
@@ -42,7 +46,6 @@ app.post('/compose', function(req, res){
   }
 
   posts.push(_blogPost);
-
   res.redirect('/');
 });
 
