@@ -3,11 +3,11 @@
 
 <p> <%= _homeContent %> </p>
 
-<% for(var a = 0; a< posts.length; a++){ %> 
-    <% console.log(posts[a]._title); %>
+<% posts.forEach(function(post){ %>
 
-<%} %>
-
+    <% console.log(post._title); %>
+    
+<%});%>
 
 
 <%- include('partials/footer');%>
