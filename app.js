@@ -32,7 +32,7 @@ app.get('/posts/:topic', function(req, res){
   let requestedTitle = req.params.topic;
 
   posts.forEach(post => {
-      if(requestedTitle.toLowerCase() === post._title.toLowerCase()){
+      if(_.toLower(requestedTitle) === _.toLower(post)){
         console.log('match found');
       }
       else{
