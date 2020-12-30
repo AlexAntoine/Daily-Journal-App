@@ -24,6 +24,7 @@ app.get('/', function(req, res){
   res.render('home', {
     _homeContent: homeStartingContent,
     posts: posts
+
   });
   
 });
@@ -32,12 +33,14 @@ app.get('/posts/:topic', function(req, res){
   let requestedTitle = req.params.topic;
 
   posts.forEach(post => {
-      if(_.toLower(requestedTitle) === _.toLower(post)){
-        console.log('match found');
-      }
-      else{
-        console.log(requestedTitle);
-        console.log(post._title);
+
+      if(_.toLower(requestedTitle) === _.toLower(post._title)){
+
+        if(post.content.length >= 100)
+        {
+            res.render('posts', {post_title: requestedTitle,
+              post_content: post.content} );
+        }
       }
   });
  
@@ -65,12 +68,6 @@ app.post('/compose', function(req, res){
   posts.push(_blogPost);
   res.redirect('/');
 });
-
-
-
-
-
-
 
 
 
