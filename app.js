@@ -35,12 +35,9 @@ app.get('/posts/:topic', function(req, res){
   posts.forEach(post => {
 
       if(_.toLower(requestedTitle) === _.toLower(post._title)){
-
-        if(post.content.length >= 100)
-        {
-            res.render('posts', {post_title: requestedTitle,
-              post_content: post.content} );
-        }
+        res.render('posts', {post_title: requestedTitle,
+          post_content: post.content} );
+        
       }
   });
  
