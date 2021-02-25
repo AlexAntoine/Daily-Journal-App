@@ -15,8 +15,6 @@ const app = express();
 
 app.set('view engine', 'ejs');
 
-let posts = [];
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
@@ -24,7 +22,7 @@ mongoose.connect('mongodb://localhost:27017/blogDB', {useNewUrlParser: true});
 
 const postSchema = new mongoose.Schema({
 
-  name:{
+  title:{
     type: String,
     required: [true, 'posted title is required']
   },
@@ -40,24 +38,28 @@ const Post = mongoose.model('Post', postSchema);
 
 app.get('/', function(req, res){
 
-  res.render('home', {
-    _homeContent: homeStartingContent,
-    posts: posts
+  Post.find({}, (error, posts)=>{
+
+    res.render('home', {
+      _homeContent: homeStartingContent,
+      posts: posts
+  
+    });
 
   });
   
+  
 });
 
-app.get('/posts/:topic', function(req, res){
-  let requestedTitle = req.params.topic;
+app.get('/posts/:postId', function(req, res){
+  let requestedId = req.params.postId;
 
-  posts.forEach(post => {
+  Post.findOne({_id:requestedId}, (error, post)=>{
 
-      if(_.toLower(requestedTitle) === _.toLower(post._title)){
-        res.render('posts', {post_title: requestedTitle,
-          post_content: post.content} );
-        
-      }
+      res.render('posts', {
+        post_title: post.title,
+        post_content: post.content
+      });
   });
  
 });
@@ -76,12 +78,20 @@ app.get('/compose', function(req, res){
 
 app.post('/compose', function(req, res){
 
+  
   let _blogPost ={
     _title: req.body.title,
     content: req.body.blogPost
-  }
+  };
 
-  posts.push(_blogPost);
+  const posts = new Post({
+    title: _blogPost._title,
+    content:_blogPost.content
+
+    });
+  
+  posts.save();
+
   res.redirect('/');
 });
 
