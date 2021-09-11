@@ -1,0 +1,20 @@
+<%- include('partials/header');%>
+
+<div class="form-container"> 
+    <form action="" method="POST">
+        <h2>Create your account</h2>
+        <div class="auth-btn">
+            <a href="#">
+                <i class="fab fa-google">Log in with Google</i>
+                
+            </a>
+        </div>
+        <input type="text" placeholder="Email" name="username" id="user">
+        <input type="text" placeholder="Password" name="password" id="password">
+        <button type="submit" class="auth-button">Sign up</button>
+        <p>Already a user? <a href="/" class="signup">Sign In</a></p>
+
+    </form>
+</div>
+
+<%- include('partials/footer');%>

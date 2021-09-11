@@ -1,14 +1,6 @@
 const mongoose = require('mongoose');
 
-const productionDB = ()=>{
+mongoose.set('useCreateIndex', true);
+mongoose.connect('mongodb://localhost:27017/blogDB', {useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify:true });
 
-}
-
-const localDB = ()=>{
-    mongoose.connect('mongodb://localhost:27017/blogDB', {useNewUrlParser:true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify:true });
-}
-
-module.exports = {
-    productionDB,
-    localDB
-}
+module.exports;
