@@ -1,19 +1,20 @@
-<%- include('partials/header');%>
+<%- include('partials/loginNav');%>
 
 <div class="form-container">
     
-    <form action="/" method="POST">
+    <form action="/" method="POST" autocomplete="off">
         <h2>Log in to your account</h2>
         <div class="auth-btn">
-            <a href="#">
-                <i class="fab fa-google">Log in with Google</i>
+            <a href="/auth/google">
+                <i class="fab fa-google"></i>
+                Log In with Google
             </a>
         </div>
-    <input type="text" placeholder="Email" name="username" id="user">
-    <input type="password" placeholder="Password" name="password" id="password">
-    <button type="submit" class="auth-button">Sign In</button>
-    <p>Not a user? <a href="/signup" class="signup">Sign Up</a></p>
-
+        <% include partials/message %>
+        <input type="text" placeholder="Email" name="username" id="user">
+        <input type="password" placeholder="Password" name="password" id="password">
+        <button type="submit" class="login-button">Sign In</button>
+        <p>Not a user? <a href="/signup" class="signup">Sign Up</a></p>
     </form>
 </div>
    

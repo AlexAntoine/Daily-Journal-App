@@ -1,13 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const express = require('express');
 const mongoose = require('mongoose');
 const router = new express.Router();
 const Post = require('../models/post');
 const User = require('../models/users');
-const {homeStartingContent,aboutContent,contactContent} = require('../data');
 const findOrCreate = require('mongoose-findorcreate');
-//require these three packages
+//require these packages
 const session = require('express-session');
 const passport = require('passport');
 
@@ -23,10 +22,43 @@ router.use(passport.session());
 
 passport.use(User.createStrategy());
 
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.serializeUser((user, done)=>{
+    done(null, user.id);
+});
 
-//GET ROUTES
+passport.deserializeUser((id, done)=>{
+
+    User.findById(id, (err, user)=>{
+
+        done(err, user)
+    })
+})
+
+passport.use(new GoogleStrategy({
+    clientID: process.env.CLIENT_ID,
+    clientSecret: process.env.CLIENT_SECRET,
+    callbackURL: 'http://localhost:3000/auth/google/blog'
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    User.findOrCreate({ username: profile.id, email: profile.emails[0].value, authorName: profile.displayName}, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+/********* GOOGLE AUTH ROUTE ***********/
+router.get('/auth/google', passport.authenticate('google',{
+    scope: ['Profile', 'email']
+}));
+
+router.get("/auth/google/blog",
+    passport.authenticate('google', {failureRedirect: '/'}),
+    (req, res)=>{
+        res.redirect('/home');
+    }
+)
+
+/********* GET ROUTES ***********/
 router.get('/',(req,res)=>{
     res.render('login');
 });
@@ -39,11 +71,10 @@ router.get('/home', async(req, res)=>{
 
     if(req.isAuthenticated()){
 
-        const posts = await Post.find();
-        res.render('home', {
-            _homeContent: homeStartingContent,
-            posts
+        const posts = await Post.find({author: req.user._id})
     
+        res.render('home',{
+            posts
         });
     }
     else{
@@ -52,35 +83,50 @@ router.get('/home', async(req, res)=>{
 });
 
 router.get('/about',(req,res)=>{
-    res.render('about',{_aboutContent: aboutContent});
-});
-
-router.get('/contact',(req, res)=>{
-    res.render('contact',{_contactContent:contactContent});
+    res.render('about');
 });
 
 router.get('/compose', (req, res)=>{
-    res.render('compose');
+
+    if(req.isAuthenticated()){
+        
+        res.render('compose');
+    }
+    else
+    res.redirect('/');
 });
   
 router.get('/posts/:postId', async(req, res)=>{
 
-   const {title, content} = await Post.findOne({_id:req.params.postId});
+   if(req.isAuthenticated()){
+        const post = await Post.findOne({_id:req.params.postId});
 
-    res.render('posts', {
-        post_title: title,
-        post_content: content
-    });
+        res.render('posts', {
+            post_title: post.title,
+            post_content: post.content,
+            post
+            
+        });
 
+   }
 });
+
+router.get('/logout', (req, res)=>{
+    req.logout();
+    
+    res.redirect('/');
+})
 //POST ROUTES
 router.post('/signup', async(req, res)=>{
 
+    let errors = [];
+
     User.register({username:req.body.username},req.body.password, (error, user)=>{
+
         if(error)
         {
-            console.log(err);
-            res.redirect('/signup');
+            errors.push({message: error.message})
+            res.render('signup', {errors})
         }else{
             passport.authenticate("local")(req, res, ()=>{
                 res.redirect('/home')
@@ -91,20 +137,26 @@ router.post('/signup', async(req, res)=>{
 });
 
 //Login route
-router.post('/', (req, res)=>{
-
-    console.log(req.body)
+router.post('/', async(req, res)=>{
+    let errors = [];
 
     const user = new User({
         username: req.body.username,
         password: req.body.password
-    })
+    });
+
+    const specificUser =  await User.findOne({username: req.body.username});
+
+    if(specificUser === null){
+        errors.push({message: 'This email has not been registered'});
+        res.render('login', {errors});
+    }
 
     req.login(user, (error)=>{
 
         if(error)
         {
-            console.log(error);
+            console.log("login error", error);
         }
         else{
             passport.authenticate('local')(req,res,()=>{
@@ -113,36 +165,32 @@ router.post('/', (req, res)=>{
         }
        
     });
-})
-router.post('/compose', async(req, res)=>{
- 
-    const _blogPost ={
-        _title: req.body.title,
-        content: req.body.blogPost
-    };
-
-    const posts = new Post({
-        title: _blogPost._title,
-        content:_blogPost.content
-
-    });
-
-    await posts.save();
-
-    res.redirect('/');
 });
 
-// passport.use(new GoogleStrategy({
-//     clientID: process.env.CLIENT_ID,
-//     clientSecret: process.env.CLIENT_SECRET,
-//     callbackURL: process.env.CALLBACK_URL
-//   },
-//   function(accessToken, refreshToken, profile, cb) {
-//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
-//       return cb(err, user);
-//     });
-//   }
-// ));
+router.post('/compose', async(req, res)=>{
+
+    const {title,blogPost} =  req.body;
+
+    const posts = new Post({
+        title,
+        content:blogPost,
+        author: req.user._id
+    });
+
+    const result  = await posts.save();
+    res.redirect('/compose');
+});
+
+router.post('/delete', async(req, res)=>{
+    const postId = req.body.deletedPost
+
+    const result = await Post.deleteOne({_id: postId})
+    
+    res.redirect('home');
+    
+});
+
+
 
   
 module.exports = router;

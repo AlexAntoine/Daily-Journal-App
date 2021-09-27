@@ -2,4 +2,12 @@
 <h1><%=  post_title %></h1>
 
 <p> <%= post_content %> </p>
+
+<div class="delete">
+    <form action="/delete" method="POST">
+        <button type="submit" name="deletedPost" value="<%= post._id %>" class="delete-button" onChange="this.form.submit()">DELETE</button>
+      
+    </form>
+  </div>
+  
 <%- include('partials/footer');%>

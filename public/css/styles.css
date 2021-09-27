@@ -26,39 +26,62 @@
 }
 
 .auth-btn{
-    background-color: #f7d23b;
-    width: 250px;
+    width: 260px;
     align-self: center;
     padding:10px;
-    border-radius: 5px;
     margin: 15px auto;
+    color: white;
+    background-color: #24BC9C;
+    border: 2px solid #24BC9C;
+    border-radius: 3px;
 }
 
 .auth-btn{
     text-decoration: none;
 }
 
-button{
-    background-color: #f7d23b;
-    width: 250px;
-    padding:10px;
-    border: 0;
-    align-self: center;
-    border-radius: 3px;
-    margin: 15px auto;
-    color: white;
+.auth-btn a{
+    color: white !important;
 }
 
-.fa-google{
+.auth-btn a:active{
+    text-decoration: none;
+}
+
+.auth-btn a:hover{
     color: white;
+    text-decoration: none;
+}
+
+.alert-button {
+    color: #8a6d3b;   
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+button{
+    background-color: #f7d23b;
+    width: 260px;
+    padding:10px;
+    align-self: center;
+    margin: 15px auto;
+    color: white;
+    background-color: #24BC9C;
+    border: 2px solid #24BC9C;
+    border-radius: 3px;
+}
+
+.fa-google:before {
+    content: "\f1a0";
 }
 
 input{
-    text-align: center;
     display: block;
-    width: 250px;
     padding: 10px;
-    border: 2px solid #f7d23b;
+    border: 2px solid #24BC9C;
     width: 260px;
     margin: 0 auto 10px auto;
     border-radius: 5px;
@@ -66,7 +89,40 @@ input{
 
 .signup{
     text-decoration: underline;
-    color: inherit;
+    
+}
+
+#read-more{
+    color: #337ab7;     
+}
+
+.compose-button{
+    color: #24BC9C;
+    background-color: white;
+    border: 2px solid #24BC9C;
+    border-radius: 8px;
+    width: 150px;
+    transition-duration: 0.7s;
+}
+
+.compose-button:hover{
+    background-color:#24BC9C ;
+    color: white;
+}
+
+.delete-button{
+    float: right;
+    color: #24BC9C;
+    background-color: white;
+    border: 2px solid #24BC9C;
+    border-radius: 8px;
+    width: 150px;
+    transition-duration: 0.5s;
+}
+
+.delete-button:hover{
+    background-color: #24BC9C ;
+    color:white;
 }
 
 a:hover, a:active, a:visited{

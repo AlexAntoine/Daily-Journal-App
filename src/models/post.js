@@ -11,14 +11,15 @@ const postSchema = new mongoose.Schema({
     content:{
       type:String,
       required: [true, 'post content is required']
+    },
+
+    author:{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+      // required: true
     }
 });
 
-// postSchema.plugin(findOrCreate);
-
-
 const Post = mongoose.model('Post', postSchema);
-
-
 
 module.exports = Post;
