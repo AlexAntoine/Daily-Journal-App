@@ -143,7 +143,34 @@ a:hover, a:active, a:visited{
 }
 
 .footer p {
-	margin-top: 25px;
-	font-size: 12px;
-  color: #fff;
+	margin-top: 15px;
+	font-size: 20px;
+   color: #fff;
 }
+
+/****** BOOTSTRAP STYLES *******/
+.nav-container{
+    padding: 0;
+    text-align: center;
+}
+.navbar-brand, .nav-link{
+    color: #777 !important;
+}
+
+.navbar-brand:hover{
+    color: #24BC9C !important;
+}
+
+.navbar{
+    background-color: #f8f8f8;
+    text-align: center;
+}
+
+.navbar-toggler{
+    width: 100px;
+}
+
+.navbar-toggler-icon{
+    color: white;
+}
+
