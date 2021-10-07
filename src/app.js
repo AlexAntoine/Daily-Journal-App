@@ -37,7 +37,7 @@ const User = require('./models/users');
 // main();
 
 //Do not change the port
-app.listen(3000,()=>{
+app.listen(process.env.PORT || 3000,()=>{
   console.log('server is listening on Port 3000');
 });
 
