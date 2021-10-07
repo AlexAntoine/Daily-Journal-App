@@ -2,7 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 var _ = require('lodash');
-const db = require('./db/mongoose');
+const {prodDb, devDb} = require('./db/mongoose');
 const userRouter = require('./Routes/router');
 
 const app = express();
@@ -10,6 +10,9 @@ const app = express();
 app.set('view engine', 'ejs');
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
+
+prodDb();
+// devDb();
 
 app.use(userRouter);
 
