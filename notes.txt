@@ -1,0 +1,2 @@
+Create author and post relationship.
+Add session and OAuth
