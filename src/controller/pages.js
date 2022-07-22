@@ -16,6 +16,14 @@ exports.getSpecificPost = async(req, res)=>{
     })
 }
 
+exports.getLoginPage = (req, res)=>{
+    res.render('login');
+}
+
+exports.getSignupPage = (req, res)=>{
+    res.render('signup');
+}
+
 exports.getAboutPage = (req, res)=>{
     res.render('about');
 }
@@ -28,6 +36,13 @@ exports.getContactPage = (req, res)=>{
     res.render('contact');
 }
 
+exports.sendLoginInfo = (req, res)=>{
+    console.log(req);
+}
+
+exports.sendSignupInfo = (req, res)=>{
+    console.log(req);
+}
 
 exports.createPost = async(req, res)=>{
    const {postTitle, postContent} = req.body;
