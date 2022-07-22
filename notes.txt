@@ -1,2 +1,8 @@
+Completed:
+created Login and signup page
+Login and signup routes
+
+Todo:
+
 Create author and post relationship.
 Add session and OAuth
