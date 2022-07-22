@@ -6,3 +6,5 @@ Todo:
 
 Create author and post relationship.
 Add session and OAuth
+Add compose button on the side
+Add delete button on post page.
